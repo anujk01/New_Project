@@ -1,25 +1,32 @@
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using System;
+using System.Collections.Generic;
+class Triplet
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    public static bool CheckTriplet(int[] arr, int n)
+    {
+        HashSet<int> squares = new HashSet<int>();
+        foreach (int num in arr) { squares.Add(num * num); }
 
-app.UseHttpsRedirection();
+        //Step 2: Iterate through all pairs in the array
 
-app.UseAuthorization();
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                int a2b2 = arr[i] * arr[i] + arr[j] * arr[j];
+                if (squares.Contains(a2b2))
+                { return true; }
+            }
+        }
+        return false;
+    }
+    // Step 1: Create a HashSet to store squares of all elements
 
-app.MapControllers();
-
-app.Run();
+    static void Main()
+    {
+        int[] arr = { 3, 2, 4, 6, 5 }; int n = arr.Length;
+        bool result = CheckTriplet(arr, n);
+        Console.WriteLine(result ? "Yes" : "No");
+    }
+    
+} 

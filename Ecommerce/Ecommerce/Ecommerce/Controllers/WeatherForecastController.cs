@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Ecommerce.Controllers
 {
@@ -29,5 +30,69 @@ namespace Ecommerce.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("Math")]
+        public string NewMethod()
+        {
+            string newresult = string.Empty;
+            int a = 1, b = 2, c = 3, d = 4;
+            double result = a * b * c * d * 252493034;
+            newresult = result.ToString();
+            return newresult;
+        }
+        [HttpGet("Sort")]
+        public int[] Arraysorting()
+        {
+            int[] numbers = { 2, 5, 4, 9, 8, 7 };
+            Array.Sort(numbers);
+            return numbers;
+
+        }
+
+        public class BankAccount
+        {
+            private decimal balance; // Private field
+
+            public void Deposit(decimal amount)
+            {
+                if (amount > 0)
+                {
+                    balance += amount; // Accessing private field
+                }
+            }
+
+            public decimal GetBalance()
+            {
+                return balance; // Getter for private field
+            }
+        }
+        [HttpPost("twosum")]
+        public int[] TwoSum(int[] nums, int target)
+        {
+            // Create a dictionary to store numbers and their indices
+            Dictionary<int, int> numToIndex = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int complement = target - nums[i]; // Calculate the complement
+
+                // Check if complement exists in the dictionary
+                if (numToIndex.ContainsKey(complement))
+                {
+                    return new int[] { numToIndex[complement], i }; // Return indices
+                }
+
+                // Store the current number with its index in the dictionary
+                if (!numToIndex.ContainsKey(nums[i]))
+                {
+                    numToIndex[nums[i]] = i;
+                }
+            }
+
+            // Return an empty array if no solution is found
+            return new int[] { };
+        }
     }
 }
+
+
