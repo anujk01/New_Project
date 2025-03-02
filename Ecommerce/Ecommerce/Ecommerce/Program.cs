@@ -1,32 +1,36 @@
-using System;
-using System.Collections.Generic;
-class Triplet
+using Ecommerce.Data;
+using Microsoft.OpenApi.Models;
+public class Program
 {
-    public static bool CheckTriplet(int[] arr, int n)
+    public static void Main(string[] args)
     {
-        HashSet<int> squares = new HashSet<int>();
-        foreach (int num in arr) { squares.Add(num * num); }
+        var builder = WebApplication.CreateBuilder(args);
 
-        //Step 2: Iterate through all pairs in the array
+        // Add services to the container.
+        builder.Services.AddControllers();
+        builder.Services.AddScoped<Customer>();
 
-        for (int i = 0; i < n; i++)
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
         {
-            for (int j = i + 1; j < n; j++)
-            {
-                int a2b2 = arr[i] * arr[i] + arr[j] * arr[j];
-                if (squares.Contains(a2b2))
-                { return true; }
-            }
-        }
-        return false;
-    }
-    // Step 1: Create a HashSet to store squares of all elements
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+        });
 
-    static void Main()
-    {
-        int[] arr = { 3, 2, 4, 6, 5 }; int n = arr.Length;
-        bool result = CheckTriplet(arr, n);
-        Console.WriteLine(result ? "Yes" : "No");
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1"));
+        }
+
+        app.UseHttpsRedirection(); //recommended.
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
     }
-    
-} 
+}

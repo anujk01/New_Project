@@ -1,16 +1,27 @@
-﻿using Ecommerce.Interface;
+﻿using Ecommerce.Controllers;
+using Ecommerce.Interface;
 
 namespace Ecommerce.Data
 {
-    public class Customer : Banking
+    public class Customer
     {
-        public override void Credit()
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<Customer> _logger;
+        public Customer(IConfiguration configuration, ILogger<Customer> logger)
         {
-            base.Credit();
+            _configuration = configuration;
+            _logger = logger;
         }
-        public override void Debit()
+
+        public int SumOfDigits(int num)
         {
-            
+            int sum = 0;
+            while (num > 0)
+            {
+                sum += num % 10;  // Extract last digit and add to sum
+                num /= 10;        // Remove last digit
+            }
+            return sum;
         }
     }
     

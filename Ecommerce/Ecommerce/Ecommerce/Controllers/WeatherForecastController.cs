@@ -1,3 +1,4 @@
+using Ecommerce.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
@@ -13,10 +14,12 @@ namespace Ecommerce.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly Customer _customer;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, Customer customer)
         {
             _logger = logger;
+            _customer = customer;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -48,24 +51,6 @@ namespace Ecommerce.Controllers
             return numbers;
 
         }
-
-        public class BankAccount
-        {
-            private decimal balance; // Private field
-
-            public void Deposit(decimal amount)
-            {
-                if (amount > 0)
-                {
-                    balance += amount; // Accessing private field
-                }
-            }
-
-            public decimal GetBalance()
-            {
-                return balance; // Getter for private field
-            }
-        }
         [HttpPost("twosum")]
         public int[] TwoSum(int[] nums, int target)
         {
@@ -91,6 +76,20 @@ namespace Ecommerce.Controllers
 
             // Return an empty array if no solution is found
             return new int[] { };
+        }
+        [HttpPost("solution")]
+        public int Solution(int N)
+        {
+            int targetSum = _customer.SumOfDigits(N) * 2; // Find the target sum
+            int candidate = N + 1;  // Start from the next number
+
+            // Keep checking until we find a number whose digit sum is the target sum
+            while (_customer.SumOfDigits(candidate) != targetSum)
+            {
+                candidate++;
+            }
+
+            return candidate;
         }
     }
 }
