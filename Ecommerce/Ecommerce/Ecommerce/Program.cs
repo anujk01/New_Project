@@ -9,7 +9,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddScoped<Customer>();
-
+        builder.Services.AddScoped<Services>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
@@ -23,6 +23,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1"));
+            //app.UseSwaggerUI();
         }
 
         app.UseHttpsRedirection(); //recommended.

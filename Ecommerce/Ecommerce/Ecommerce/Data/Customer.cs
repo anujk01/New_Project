@@ -1,7 +1,4 @@
-﻿using Ecommerce.Controllers;
-using Ecommerce.Interface;
-
-namespace Ecommerce.Data
+﻿namespace Ecommerce.Data
 {
     public class Customer
     {
