@@ -1,37 +1,93 @@
-using Ecommerce.Data;
-using Microsoft.OpenApi.Models;
+﻿using Ecommerce.Data;
+using Ecommerce.Models;
+using Ecommerce.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        // Bind MongoDbSettings from appsettings.json
+        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocal", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
+        // 1️⃣ Register services
         builder.Services.AddControllers();
-        builder.Services.AddScoped<Customer>();
-        builder.Services.AddScoped<Services>();
+        builder.Services.AddSingleton<JWTService>();
+        builder.Services.AddSingleton<Customer>();
+        builder.Services.AddSingleton<AuthServices>();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   var config = builder.Configuration;
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidIssuer = config["Jwt:Issuer"],
+                       ValidateAudience = true,
+                       ValidAudience = config["Jwt:Audience"],
+                       ValidateIssuerSigningKey = true,
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
+                       ValidateLifetime = true,
+                   };
+               });
+        builder.Services.AddAuthorization();
+
+        // Swagger (optional)
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-        });
+            c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                Description = "Enter 'Bearer' [space] and then your token. Example: Bearer eyJhbGciOiJIUzI1NiIsInR..."
+            });
 
+            c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+        });
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
+        // 2️⃣ Configure middleware pipeline
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1"));
-            //app.UseSwaggerUI();
+            app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection(); //recommended.
-
+        app.UseHttpsRedirection();
+        app.UseAuthentication(); // must come BEFORE UseAuthorization
         app.UseAuthorization();
 
         app.MapControllers();
-
         app.Run();
+
     }
 }
