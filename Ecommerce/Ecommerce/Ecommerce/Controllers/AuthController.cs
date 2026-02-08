@@ -1,6 +1,5 @@
 ﻿using Ecommerce.Data;
 using Ecommerce.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
