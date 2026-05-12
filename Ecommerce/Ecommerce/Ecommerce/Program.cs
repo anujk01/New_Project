@@ -1,4 +1,4 @@
-﻿using Ecommerce.Data;
+using Ecommerce.Data;
 using Ecommerce.Models;
 using Ecommerce.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,11 +12,18 @@ public class Program
 
         // Bind MongoDbSettings from appsettings.json
         builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+
+        // Render provides a PORT environment variable
+        var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+        builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
+        var frontendUrl = builder.Configuration["UI:Url"] ?? "http://localhost:5173";
+
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowLocal", policy =>
+            options.AddPolicy("AllowFrontend", policy =>
             {
-                policy.AllowAnyOrigin()
+                policy.WithOrigins(frontendUrl.Split(','))
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
@@ -81,6 +88,8 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseCors("AllowFrontend");
 
         app.UseHttpsRedirection();
         app.UseAuthentication(); // must come BEFORE UseAuthorization
