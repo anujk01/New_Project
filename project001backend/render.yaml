@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ecommerce-backend-prod
+    name: project001backend-prod
     runtime: docker
     plan: free
     region: ohio
@@ -12,12 +12,12 @@ services:
       - key: UI__Url
         value: "http://localhost:5173" # Update this to your deployed production UI URL
       - key: MongoDbSettings__ConnectionString
-        value: "mongodb+srv://anujkumarr97:Anuj54321@ecommercedb.wzm9gjx.mongodb.net/?retryWrites=true&w=majority&appName=ecommercedb"
+        value: "mongodb+srv://anujkumarr97:Anuj54321@ecommercedb.wzm9gjx.mongodb.net/?retryWrites=true&w=majority&appName=project001backenddb"
       - key: MongoDbSettings__DatabaseName
         value: "new_program"
       - key: Jwt__Key
         value: "ThisIsASecretKeyForJwtToken12345"
       - key: Jwt__Issuer
-        value: "EcommerceApp"
+        value: "project001backendApp"
       - key: Jwt__Audience
-        value: "EcommerceUsers"
+        value: "project001backendUsers"

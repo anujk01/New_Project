@@ -1,8 +1,8 @@
-﻿using Ecommerce.Data;
-using Ecommerce.Services;
+using project001backend.Data;
+using project001backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.Controllers
+namespace project001backend.Controllers
 {
     [ApiController]
     [Route("[controller]/api")]

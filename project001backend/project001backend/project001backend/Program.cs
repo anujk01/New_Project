@@ -1,6 +1,6 @@
-using Ecommerce.Data;
-using Ecommerce.Models;
-using Ecommerce.Services;
+using project001backend.Data;
+using project001backend.Models;
+using project001backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;

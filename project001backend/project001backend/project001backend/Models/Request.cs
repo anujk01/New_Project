@@ -1,7 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace Ecommerce.Models
+namespace project001backend.Models
 {
     public class UserRequest
     {

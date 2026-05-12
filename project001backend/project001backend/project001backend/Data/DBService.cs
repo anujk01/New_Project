@@ -1,7 +1,7 @@
-﻿using Ecommerce.Models;
+using project001backend.Models;
 using MongoDB.Driver;
 
-namespace Ecommerce.Data
+namespace project001backend.Data
 {
     public class DBService
     {

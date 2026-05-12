@@ -1,8 +1,8 @@
-﻿using Ecommerce.Models;
+using project001backend.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Ecommerce.Data
+namespace project001backend.Data
 {
     public class Customer
     {

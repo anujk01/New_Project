@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Ecommerce": {
+    "project001backend": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

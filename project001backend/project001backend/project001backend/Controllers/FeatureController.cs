@@ -1,8 +1,8 @@
-using Ecommerce.Data;
+using project001backend.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ecommerce.Controllers
+namespace project001backend.Controllers
 {
     [Authorize]
     [ApiController]
