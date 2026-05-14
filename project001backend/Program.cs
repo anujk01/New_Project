@@ -17,7 +17,7 @@ public class Program
         var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
         builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
-        var frontendUrl = builder.Configuration["UI:Url"] ?? "http://localhost:5173";
+        var frontendUrl = builder.Configuration["UI:Url"];
 
         builder.Services.AddCors(options =>
         {
