@@ -39,8 +39,5 @@ namespace project001backend.Controllers
                 user = new { user.Username, user.Email }
             });
         }
-
-
-
     }
 }
