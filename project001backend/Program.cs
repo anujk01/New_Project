@@ -25,8 +25,8 @@ public class Program
             {
                 policy.WithOrigins(frontendUrl.Split(','))
                       .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                      .AllowAnyMethod();
+                      //.AllowCredentials();
             });
         });
         // 1️⃣ Register services
