@@ -14,8 +14,11 @@ public class Program
         builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 
         // Render provides a PORT environment variable
-        var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-        builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+        var port = Environment.GetEnvironmentVariable("PORT");
+        if (!string.IsNullOrEmpty(port))
+        {
+            builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+        }
 
         var frontendUrl = builder.Configuration["UI:Url"];
 
@@ -94,7 +97,10 @@ public class Program
 
         app.UseCors("AllowFrontend");
 
-        app.UseHttpsRedirection();
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseHttpsRedirection();
+        }
         app.UseAuthentication(); // must come BEFORE UseAuthorization
         app.UseAuthorization();
 
