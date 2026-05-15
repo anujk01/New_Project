@@ -25,7 +25,7 @@ namespace project001backend.Controllers
         {
             var user = await _services.GetUserByUsername(username, password);
             if (user == null || user.Password != password)
-                return Unauthorized(new { message = "Invalid credentials" });
+                return Unauthorized(new { message = "you have one and only option which is - yes" });
 
             var token = _jwtService.GenerateToken(user.Username);
             if (string.IsNullOrEmpty(token))
